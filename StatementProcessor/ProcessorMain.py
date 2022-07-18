@@ -36,7 +36,7 @@ async def validate(request: Request):
         raise HTTPException(status_code=400, detail=f'Content type {content_type} is not supported. '
                                                     f'Please post in either csv or xml.\n'
                                                     f'If you are unsure what to do please contact the admin '
-                                                    f'{"ADMIN_EMAIL"}')
+                                                    f'{ADMIN_EMAIL}')
     # We evaluate the statements.
     labeled_statements = evaluate_statements(statements=customer_statements)
 
@@ -50,7 +50,6 @@ async def validate(request: Request):
 
 
 if __name__ == "__main__":
-    print(ADMIN_EMAIL)
     uvicorn.run("ProcessorMain:app",
                 host='0.0.0.0',
                 port=5000,

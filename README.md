@@ -12,3 +12,7 @@ Open a terminal in the root of the Customer-Statement-Processor and create an en
 2. Start uvicorn with the following command:
    - uvicorn StatementProcessor.ProcessorMain:app --host 0.0.0.0 --port 5000
 3. The API is now running at localhost/5000
+
+## Post to the API
+You can use cURL or a gui such as Postman to post to the API. Postman api calls can be imported 
+from the StatementProcessor.postman_collection.json file
