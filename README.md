@@ -9,10 +9,11 @@ Open a terminal in the root of the Customer-Statement-Processor and create an en
 
 ## Starting up the API
 1. Open a terminal in the root of the project.
-2. Start uvicorn with the following command:
+2. Start the api with the following uvicorn command:
    - uvicorn StatementProcessor.ProcessorMain:app --host 0.0.0.0 --port 5000
 3. The API is now running at localhost/5000
 
 ## Post to the API
-You can use cURL or a gui such as Postman to post to the API. Postman api calls can be imported 
-from the StatementProcessor.postman_collection.json file
+The API expects files in binary which you can post to it using cURL or a gui such as Postman. Postman API calls can be 
+imported my importing from the StatementProcessor.postman_collection.json file. Postman has the advantage that is 
+immediately visualizes the pdf file that is returned from the API.
