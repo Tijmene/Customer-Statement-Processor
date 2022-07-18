@@ -8,7 +8,7 @@ class StatementValidation(Enum):
     """ Enum describing the possible validation results """
     VALID = "valid"
     NON_UNIQUE_REF = "id not unique"
-    INCORRECT_MUT = "incorrect mutation"
+    INCORRECT_MUT = "wrong mutation"
 
     def __str__(self):
         return str(self.value)
@@ -16,6 +16,7 @@ class StatementValidation(Enum):
 
 @dataclass
 class LabeledStatement:
-    """ Simple wrapper around a :class:`CustomerStatementModel` that adds a :class:`StatementValidation` Label. """
+    """ Simple wrapper around a :class:`CustomerStatementModel` that adds a (potentiall multiple)
+    :class:`StatementValidation` Label. """
     statement: CustomerStatementModel
-    label: StatementValidation
+    labels: [StatementValidation]

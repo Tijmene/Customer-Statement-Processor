@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "58bf1b22-b1cf-4a9a-beec-23b938a07696",
-		"name": "InnSpire Assesment",
+		"_postman_id": "c2356db9-0458-43df-a57e-3dc345e19567",
+		"name": "StatementProcessor",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [

@@ -128,4 +128,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# pdf_reports/*
+# skip pdf_reports
+pdf_reports/*

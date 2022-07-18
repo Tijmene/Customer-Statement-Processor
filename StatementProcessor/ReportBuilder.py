@@ -43,18 +43,19 @@ async def build_report(labeled_statements: [LabeledStatement]) -> str:
     # Insert the data
     for labeled_statement in labeled_statements:
         statement = labeled_statement.statement
-        label = labeled_statement.label
-        if label is StatementValidation.VALID:
+        labels = labeled_statement.labels
+        if StatementValidation.VALID in labels:
             pdf.set_fill_color(207, 242, 202)
 
-        elif label is StatementValidation.INCORRECT_MUT or label is StatementValidation.NON_UNIQUE_REF:
+        elif StatementValidation.INCORRECT_MUT in labels or StatementValidation.NON_UNIQUE_REF in labels:
             pdf.set_fill_color(250, 107, 132)
 
         for field in fields(statement):
             value = getattr(statement, field.name)
             pdf.cell(col_widths[field.name], th, str(value), border=1, fill=True)
 
-        pdf.cell(col_widths["validation"], th, str(label), border=1, fill=True)
+        labels = [str(label) for label in labels]
+        pdf.cell(col_widths["validation"], th, str(labels).strip("[]"), border=1, fill=True)
 
         pdf.ln(th)
 
@@ -75,11 +76,11 @@ def _calc_col_widths(epw: float, fields) -> dict:
     for field in fields:
         len_modifier = 1
         if field.name == "reference":
-            len_modifier = 0.5
+            len_modifier = 0.45
         elif field.name in ["start_balance", "mutation", "end_balance"]:
-            len_modifier = 0.6
+            len_modifier = 0.55
         elif field.name == "account_number":
-            len_modifier = 1.2
+            len_modifier = 1.1
         elif field.name == "description":
             len_modifier = 1.4
 

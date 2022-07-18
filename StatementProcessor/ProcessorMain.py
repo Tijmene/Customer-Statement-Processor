@@ -4,7 +4,7 @@ from fastapi import FastAPI, Request, HTTPException
 from starlette.responses import FileResponse
 
 from StatementProcessor.ReportBuilder import build_report
-from StatementProcessor.StatementProcessorLogic import evaluate_statements
+from StatementProcessor.ProcessorLogic import evaluate_statements
 from StatementProcessor.FileLoader import load_xml, load_csv
 
 # Loading environment variables using dotenv.

@@ -19,14 +19,15 @@ def evaluate_statements(statements: [CustomerStatementModel]) -> [LabeledStateme
 
     for statement in statements:
         # Check if reference id is unique
+        labels = []
         if statement.reference in duplicate_ids:
-            label = StatementValidation.NON_UNIQUE_REF
+            labels.append(StatementValidation.NON_UNIQUE_REF)
         # Check if the mutation was processed correctly
-        elif not _mutation_ok(statement):
-            label = StatementValidation.INCORRECT_MUT
-        else:
-            label = StatementValidation.VALID
-        labeled_statements.append(LabeledStatement(statement, label))
+        if not _mutation_ok(statement):
+            labels.append(StatementValidation.INCORRECT_MUT)
+        if len(labels) == 0:
+            labels.append(StatementValidation.VALID)
+        labeled_statements.append(LabeledStatement(statement, labels))
 
     return labeled_statements
 
@@ -34,6 +35,15 @@ def evaluate_statements(statements: [CustomerStatementModel]) -> [LabeledStateme
 def _mutation_ok(statement: CustomerStatementModel) -> bool:
     return round(statement.start_balance + statement.mutation, 2) == statement.end_balance
 
+
+def test_identical_ids():
+    pass
+
+def test_wrong_mutation():
+    pass
+
+def test_both_wrong():
+    pass
 
 if __name__ == "__main__":
     import json
