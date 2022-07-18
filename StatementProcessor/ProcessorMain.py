@@ -9,7 +9,8 @@ from dotenv import load_dotenv
 # The variables are pushed to git, normally they are not on the repository for safety reasons.
 from pathlib import Path
 
-from StatementProcessor.StatementProcessorLogic import validate_statements
+from StatementProcessor.ReportBuilder import build_report
+from StatementProcessor.StatementProcessorLogic import evaluate_statements
 from FileLoader import load_xml, load_csv
 
 load_dotenv()
@@ -28,11 +29,13 @@ async def validate(request: Request):
     elif content_type == 'text/csv' or content_type == 'application/csv':
         customer_statements = load_csv(file)
     else:
-        raise HTTPException(status_code=400, detail=f'Content type {content_type} not supported. '
+        raise HTTPException(status_code=400, detail=f'Content type {content_type} is not supported. '
                                                     f'Please post in either csv or xml.')
-    failed_statements = validate_statements(statements=customer_statements)
+    labeled_statements = evaluate_statements(statements=customer_statements)
 
-    return Response(content=failed_statements)
+    report_pdf = build_report(labeled_statements)
+    pass
+    # return Response(content=labeled_statements)
 
 if __name__ == "__main__":
     uvicorn.run("ProcessorMain:app",

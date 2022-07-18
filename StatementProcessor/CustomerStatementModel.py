@@ -1,4 +1,11 @@
+from dataclasses import dataclass
+
+
+@dataclass
 class CustomerStatementModel:
+    """
+    Representation of a customer statement.
+    """
     reference: str
     account_number: str
     start_balance: float
@@ -45,7 +52,7 @@ class CustomerStatementModel:
             missing_keys.append("End Balance")
 
         if "description" in statement_dict:
-            key_desc = "@description"
+            key_desc = "description"
         elif "Description" in statement_dict:
             key_desc = "Description"
         else:
