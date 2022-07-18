@@ -2,6 +2,7 @@
 This customer statement processor processes and validates customer statement records. Input can be in the CSV or XML file format.
 
 ## Install requirements.txt in venv
+Make sure you are using Python version 3.10 to prevent import errors! 
 Open a terminal in the root of the Customer-Statement-Processor and create an environment by typing in the following commands:
 1. py -m venv Customer-Statement-Processor
 2. Activate the venv by executing the activate.bat -> venv\scripts\activate.bat
