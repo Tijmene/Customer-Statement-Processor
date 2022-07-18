@@ -17,3 +17,5 @@ Open a terminal in the root of the Customer-Statement-Processor and create an en
 The API expects files in binary which you can post to it using cURL or a gui such as Postman. Postman API calls can be 
 imported my importing from the StatementProcessor.postman_collection.json file. Postman has the advantage that is 
 immediately visualizes the pdf file that is returned from the API.
+
+Sometimes Postman clears the content-type. If this happens remove and re-add the file to be sent in Postman.
