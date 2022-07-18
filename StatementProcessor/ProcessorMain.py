@@ -9,6 +9,8 @@ from dotenv import load_dotenv
 # The variables are pushed to git, normally they are not on the repository for safety reasons.
 from pathlib import Path
 
+from starlette.responses import FileResponse
+
 from StatementProcessor.ReportBuilder import build_report
 from StatementProcessor.StatementProcessorLogic import evaluate_statements
 from FileLoader import load_xml, load_csv
@@ -33,9 +35,12 @@ async def validate(request: Request):
                                                     f'Please post in either csv or xml.')
     labeled_statements = evaluate_statements(statements=customer_statements)
 
-    report_pdf = build_report(labeled_statements)
-    pass
-    # return Response(content=labeled_statements)
+    report_pdf_location = build_report(labeled_statements)
+
+    return FileResponse(report_pdf_location,
+                        media_type="application/pdf",
+                        filename="ticket.pdf")
+
 
 if __name__ == "__main__":
     uvicorn.run("ProcessorMain:app",
@@ -44,4 +49,6 @@ if __name__ == "__main__":
                 reload=True,
                 debug=True,
                 workers=1)
+
+
 
