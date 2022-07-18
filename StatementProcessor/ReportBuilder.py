@@ -9,7 +9,7 @@ from StatementProcessor.CustomerStatementModel import CustomerStatementModel
 from StatementProcessor.StatementValidation import LabeledStatement, StatementValidation
 
 
-def build_report(labeled_statements: [LabeledStatement]) -> str:
+async def build_report(labeled_statements: [LabeledStatement]) -> str:
     # Create instance of FPDF class
     # Letter size paper, use inches as unit of measure
     pdf = FPDF(format='letter')
@@ -55,8 +55,10 @@ def build_report(labeled_statements: [LabeledStatement]) -> str:
     # Line break equivalent to 4 lines
     pdf.ln(4 * th)
 
+    # Save the generated pdf
     title = f"{datetime.today().strftime('%Y-%m-%d')}-Processed_statements-{uuid.uuid4()}"
-    file_path = os.path.join("..", "pdf_reports", title + ".pdf")
+    from StatementProcessor.ProcessorMain import ROOT_DIR
+    file_path = os.path.join(ROOT_DIR, "pdf_reports", title + ".pdf")
     print(f"Saving pdf at {file_path}")
     pdf.output(f"{file_path}")
 

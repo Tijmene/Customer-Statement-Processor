@@ -1,6 +1,7 @@
+import os
+
 import uvicorn
-import requests as r
-from fastapi import FastAPI, Request, HTTPException, Response
+from fastapi import FastAPI, Request, HTTPException
 
 # Using dotenv to load environment variables.
 from dotenv import load_dotenv
@@ -13,11 +14,13 @@ from starlette.responses import FileResponse
 
 from StatementProcessor.ReportBuilder import build_report
 from StatementProcessor.StatementProcessorLogic import evaluate_statements
-from FileLoader import load_xml, load_csv
+from StatementProcessor.FileLoader import load_xml, load_csv
 
 load_dotenv()
 env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path)
+
+ROOT_DIR = os.path.abspath(os.path.join(__file__, "..", ".."))
 
 app = FastAPI()
 
@@ -32,10 +35,12 @@ async def validate(request: Request):
         customer_statements = load_csv(file)
     else:
         raise HTTPException(status_code=400, detail=f'Content type {content_type} is not supported. '
-                                                    f'Please post in either csv or xml.')
+                                                    f'Please post in either csv or xml.\n'
+                                                    f'If you are unsure what to do please contact the admin '
+                                                    f'{os.environ["ADMIN_EMAIL"]}')
     labeled_statements = evaluate_statements(statements=customer_statements)
 
-    report_pdf_location = build_report(labeled_statements)
+    report_pdf_location = await build_report(labeled_statements)
 
     return FileResponse(report_pdf_location,
                         media_type="application/pdf",
@@ -43,6 +48,7 @@ async def validate(request: Request):
 
 
 if __name__ == "__main__":
+    print(ROOT_DIR)
     uvicorn.run("ProcessorMain:app",
                 host='0.0.0.0',
                 port=5000,
