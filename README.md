@@ -1,5 +1,5 @@
 # Customer-Statement-Processor
-This customer statement processor processes and validates customer statement records. Input can be in the CSV or XML file format. 
+This customer statement processor processes and validates customer statement records. Input can be in the CSV or XML file format.
 
 ## Install requirements.txt in venv
 Open a terminal in the root of the Customer-Statement-Processor and create an environment by typing in the following commands:
@@ -19,3 +19,6 @@ imported my importing from the StatementProcessor.postman_collection.json file. 
 immediately visualizes the pdf file that is returned from the API.
 
 Sometimes Postman clears the content-type. If this happens remove and re-add the file to be sent in Postman.
+
+## Running without the API
+It is possible to analyze files without the API by running the run_without_api.py file directly. 
