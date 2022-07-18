@@ -41,7 +41,7 @@ async def validate(request: Request):
     labeled_statements = evaluate_statements(statements=customer_statements)
 
     # Create a pdf with the results
-    report_pdf_location = await build_report(labeled_statements)
+    report_pdf_location = build_report(labeled_statements)
 
     # And return the pdf.
     return FileResponse(report_pdf_location,

@@ -9,7 +9,7 @@ from StatementProcessor.CustomerStatementModel import CustomerStatementModel
 from StatementProcessor.StatementValidation import LabeledStatement, StatementValidation
 
 
-async def build_report(labeled_statements: [LabeledStatement]) -> str:
+def build_report(labeled_statements: [LabeledStatement]) -> str:
     """
     Builds a pdf that details the result of the validation.
     :param labeled_statements: list of :class:`LabeledStatement's
