@@ -5,6 +5,7 @@ from StatementProcessor.CustomerStatementModel import CustomerStatementModel
 
 
 class StatementValidation(Enum):
+    """ Enum describing the possible validation results """
     VALID = "valid"
     NON_UNIQUE_REF = "id not unique"
     INCORRECT_MUT = "incorrect mutation"
@@ -15,5 +16,6 @@ class StatementValidation(Enum):
 
 @dataclass
 class LabeledStatement:
+    """ Simple wrapper around a :class:`CustomerStatementModel` that adds a :class:`StatementValidation` Label. """
     statement: CustomerStatementModel
     label: StatementValidation

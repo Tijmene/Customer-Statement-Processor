@@ -10,22 +10,27 @@ from StatementProcessor.StatementValidation import LabeledStatement, StatementVa
 
 
 async def build_report(labeled_statements: [LabeledStatement]) -> str:
-    # Create instance of FPDF class
-    # Letter size paper, use inches as unit of measure
+    """
+    Builds a pdf that details the result of the validation.
+    :param labeled_statements: list of :class:`LabeledStatement's
+    :return: the path where the pdf is stored.
+    """
+
+    # Create instance of FPDF class in Letter size paper
     pdf = FPDF(format='letter')
     pdf.add_page()
 
-    # Set column width to 1 / (elements in statement + 1) of effective page width to distribute content
+    # Set the effective page width
     epw = pdf.w - 2 * pdf.l_margin
 
-    # Document title centered, 'B'old, 14 pt
+    # Document title centered
     pdf.set_font('Arial', 'B', 20.0)
     pdf.cell(epw, 0.0, 'Processed Customer Statements', align='C')
     pdf.set_font("Arial", size=8)
     pdf.ln(20)
 
+    # Space between rows and columns
     th = pdf.font_size + 1
-
     col_widths = _calc_col_widths(epw, fields(CustomerStatementModel))
 
     # Create headers
@@ -35,6 +40,7 @@ async def build_report(labeled_statements: [LabeledStatement]) -> str:
 
     pdf.ln(th)
 
+    # Insert the data
     for labeled_statement in labeled_statements:
         statement = labeled_statement.statement
         label = labeled_statement.label
@@ -55,11 +61,10 @@ async def build_report(labeled_statements: [LabeledStatement]) -> str:
     # Line break equivalent to 4 lines
     pdf.ln(4 * th)
 
-    # Save the generated pdf
+    # Save the generated pdf ensuring an unique name by using a uuid
     title = f"{datetime.today().strftime('%Y-%m-%d')}-Processed_statements-{uuid.uuid4()}"
     from StatementProcessor.ProcessorMain import ROOT_DIR
     file_path = os.path.join(ROOT_DIR, "pdf_reports", title + ".pdf")
-    print(f"Saving pdf at {file_path}")
     pdf.output(f"{file_path}")
 
     return file_path
