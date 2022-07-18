@@ -24,13 +24,13 @@ async def validate(request: Request):
     content_type = request.headers['Content-Type']
     file = await request.body()
     if content_type == 'application/xml':
-        json_statements = load_xml(file)
+        customer_statements = load_xml(file)
     elif content_type == 'text/csv' or content_type == 'application/csv':
-        json_statements = load_csv(file)
+        customer_statements = load_csv(file)
     else:
         raise HTTPException(status_code=400, detail=f'Content type {content_type} not supported. '
                                                     f'Please post in either csv or xml.')
-    failed_statements = validate_statements(statements=json_statements)
+    failed_statements = validate_statements(statements=customer_statements)
 
     return Response(content=failed_statements)
 

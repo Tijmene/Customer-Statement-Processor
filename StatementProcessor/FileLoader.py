@@ -2,26 +2,32 @@ import io
 import xmltodict
 import pandas as pd
 import json
+from StatementProcessor.CustomerStatementModel import CustomerStatementModel
 
 
-def load_xml(xml_file):
+def load_xml(xml_file) -> [CustomerStatementModel]:
+    """
+    Loads the statements from a xml file to :class:`CustomerStatementModel`s.
+    :param xml_file: binary of the xml file
+    :return: list of :class:`CustomerStatementModel`
+    """
     json = xmltodict.parse(xml_file)
     statements = json["records"]["record"]
-    formatted_statements = []
+    statement_models = []
     for statement in statements:
-        formatted_statement = {}
-        formatted_statement["Reference"] = str(statement["@reference"])
-        formatted_statement["Account number"] = str(statement["accountNumber"])
-        formatted_statement["Start Balance"] = float(statement["startBalance"])
-        formatted_statement["Mutation"] = float(statement["mutation"])
-        formatted_statement["Description"] = str(statement["description"])
-        formatted_statement["End Balance"] = float(statement["endBalance"])
-        formatted_statements.append(formatted_statement)
-
-    return formatted_statements
+        statement_models.append(CustomerStatementModel(statement))
+    return statement_models
 
 
-def load_csv(csv_file) -> [dict]:
+def load_csv(csv_file) -> [CustomerStatementModel]:
+    """
+    Loads the statements from a csv file to :class:`CustomerStatementModel`s.
+    :param csv_file: binary of the csv file
+    :return: list of :class:`CustomerStatementModel`
+    """
     io_string = io.StringIO(csv_file.decode("ISO-8859-1"))
     statements = pd.read_csv(io_string)
-    return [json.loads(statements.loc[index].to_json()) for index in statements.index]
+    statement_models = []
+    for statement in [json.loads(statements.loc[index].to_json()) for index in statements.index]:
+        statement_models.append(CustomerStatementModel(statement))
+    return statement_models
