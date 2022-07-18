@@ -1,8 +1,10 @@
+import random
+from functional import seq
 import pandas as pd
 import collections
 
 from StatementProcessor.StatementValidation import StatementValidation, LabeledStatement
-from StatementProcessor.CustomerStatementModel import CustomerStatementModel
+from StatementProcessor.CustomerStatementModel import CustomerStatementModel, generate_random_csm
 
 
 def evaluate_statements(statements: [CustomerStatementModel]) -> [LabeledStatement]:
@@ -36,14 +38,71 @@ def _mutation_ok(statement: CustomerStatementModel) -> bool:
     return round(statement.start_balance + statement.mutation, 2) == statement.end_balance
 
 
-def test_identical_ids():
-    pass
+def test_identical_references():
+    num_same_id = random.randint(1,500)
+    identical_id = str(random.randint(1, 100000))
+    models = []
+    for i in range(1000):
+        if i < num_same_id:
+            model = generate_random_csm(reference=identical_id,
+                                        correct_mut=True)
+        else:
+            model = generate_random_csm(correct_mut=True)
+        models.append(model)
+
+    labeled_models = evaluate_statements(models)
+    number_of_non_uniques = \
+        seq(labeled_models).map(lambda m: True if StatementValidation.NON_UNIQUE_REF in m.labels else False) \
+                           .filter(lambda b: b) \
+                           .len()
+
+    assert number_of_non_uniques == num_same_id
+
 
 def test_wrong_mutation():
-    pass
+    num_wrong_mut = random.randint(1, 500)
+    models = []
+    for i in range(1000):
+        if i < num_wrong_mut:
+            model = generate_random_csm(correct_mut=False)
+        else:
+            model = generate_random_csm(correct_mut=True)
+        models.append(model)
+
+    labeled_models = evaluate_statements(models)
+    number_of_incorrect_muts = \
+        seq(labeled_models).map(lambda m: True if StatementValidation.INCORRECT_MUT in m.labels else False) \
+                           .filter(lambda b: b) \
+                           .len()
+
+    assert number_of_incorrect_muts == num_wrong_mut
+
 
 def test_both_wrong():
-    pass
+    num_wrong_mut = random.randint(1, 500)
+    num_same_id = random.randint(1,500)
+    identical_id = str(random.randint(1, 100000))
+    models = []
+    for i in range(1000):
+        flag = False if i < num_wrong_mut else True
+        ref = identical_id if i < num_same_id else None
+
+        model = generate_random_csm(correct_mut=flag, reference=ref)
+        models.append(model)
+
+    labeled_models = evaluate_statements(models)
+    number_of_incorrect_muts = \
+        seq(labeled_models).map(lambda m: True if StatementValidation.INCORRECT_MUT in m.labels else False) \
+                           .filter(lambda b: b) \
+                           .len()
+
+    number_of_non_uniques = \
+        seq(labeled_models).map(lambda m: True if StatementValidation.NON_UNIQUE_REF in m.labels else False) \
+                           .filter(lambda b: b) \
+                           .len()
+
+    assert number_of_non_uniques == num_same_id
+    assert number_of_incorrect_muts == num_wrong_mut
 
 if __name__ == "__main__":
     import json
