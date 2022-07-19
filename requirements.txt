@@ -7,3 +7,4 @@ requests~=2.28.1
 fpdf~=1.7.2
 starlette~=0.19.1
 pyfunctional~=1.4.3
+pytest~=7.1.2

@@ -39,7 +39,7 @@ def _mutation_ok(statement: CustomerStatementModel) -> bool:
 
 
 def test_identical_references():
-    num_same_id = random.randint(1,500)
+    num_same_id = random.randint(1, 500)
     identical_id = str(random.randint(1, 100000))
     models = []
     for i in range(1000):
@@ -80,7 +80,7 @@ def test_wrong_mutation():
 
 def test_both_wrong():
     num_wrong_mut = random.randint(1, 500)
-    num_same_id = random.randint(1,500)
+    num_same_id = random.randint(1, 500)
     identical_id = str(random.randint(1, 100000))
     models = []
     for i in range(1000):

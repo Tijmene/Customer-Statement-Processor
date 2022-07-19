@@ -27,7 +27,7 @@ async def validate(request: Request):
 
     # We first convert the incoming data to CustomerStatementModel s
     content_type = request.headers['Content-Type']
-    file = await request.body()  # TODO save incom\ming files to the disk of the server (use same UUID as pdf)
+    file = await request.body()  # TODO save incoming files to the disk of the server (use same UUID as pdf)
     if content_type == 'application/xml':
         customer_statements = load_xml(file)
     elif content_type == 'text/csv' or content_type == 'application/csv':
