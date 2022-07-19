@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 # skip pdf_reports
-pdf_reports/*
+pdf_reports/.pdf
